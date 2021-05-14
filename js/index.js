@@ -2,7 +2,7 @@
 var firstNumber = 7;
 
 var number = 17; //number
-var bigInt = 9000000; //bigInt
+var bigInt = BigInt(9000000); //bigInt
 var math = Math.PI; //PI number
 var date = Date.now();
 
