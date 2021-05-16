@@ -1,17 +1,53 @@
-var addition = document.getElementById('plus')
-var subtraction = document.getElementById('minus') 
-var multiplication = document.getElementById('multiple')
-var division = document.getElementById('divide')
+var previousNumber = 0;
+var operationType = '';
 
-var result = document.getElementById("sum")
-var inputValue = document.getElementById("calculatorInput")
-var num1 , num2; 
 
-addNumbers.addEventListener('click', function () {
+function addNumbers() {
+        previousNumber = parseInt(document.getElementById('calculatorInput').value);
+        operationType = "+";
 
-        num1 = parseInt(inputValue.value)
-        num2 = parseInt(inputValue.value)
-        inputValue.value = 0;
-        result.innerHTML = num1 + num2;
-        num1 = 0
-});
+        document.getElementById('calculatorInput').value = ' ';
+}
+
+function subtractNumbers() {
+        previousNumber = parseInt(document.getElementById('calculatorInput').value);
+        operationType = "-";
+
+        document.getElementById('calculatorInput').value = ' ';
+}
+
+function multipleNumbers() {
+        previousNumber = parseInt(document.getElementById('calculatorInput').value);
+        operationType = "*";
+
+        document.getElementById('calculatorInput').value = ' ';
+}
+
+function divideNumbers() {
+        previousNumber = parseInt(document.getElementById('calculatorInput').value);
+        operationType = "/";
+
+        document.getElementById('calculatorInput').value = ' ';
+}
+
+
+function calculate() {
+        var number1 = previousNumber;
+        var number2 = parseInt(document.getElementById('calculatorInput').value);
+        var result;
+
+        if (operationType == "+"){
+                result = number1 + number2;
+        } else if (operationType == "-"){
+                result = number1 - number2;
+        } else if (operationType == "*"){
+                result = number1 * number2;
+        } else if (operationType == "/"){
+                result = number1 / number2;
+        }
+
+
+
+        document.getElementById('calculatorInput').value = result;
+
+}
