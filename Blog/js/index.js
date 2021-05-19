@@ -38,7 +38,6 @@ function Post(title, text, author) {
         //Delete post by click Delete button
         button.onclick = function deletePosts() {
             button.parentElement.remove();
-            console.log("Delete Clicked");
         };
 
         return li;
