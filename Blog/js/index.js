@@ -14,18 +14,22 @@ function Post(title, text, author) {
     this.title = title;
     this.text = text;
     this.author = author;
+    this.index = Date.now();
     this.getListObject = function () {
+
         const li = document.createElement('li');
 
         const h3 = document.createElement('h3');
         const pText = document.createElement('p');
         const pAuthor = document.createElement('p');
         const button = document.createElement('button');
+        const _this = this;
 
         h3.innerText = this.title;
         pText.innerText = this.text;
         pAuthor.innerText = this.author;
         button.innerText = "DELETE";
+        li.id = this.index;
 
         li.appendChild(h3);
         li.appendChild(pText);
@@ -37,7 +41,14 @@ function Post(title, text, author) {
 
         //Delete post by click Delete button
         button.onclick = function deletePosts() {
-            button.parentElement.remove();
+            //console.log(_this.index);
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i].index == _this.index) {
+                    posts.splice(i, 1);
+                    renderPosts(posts);
+                    i = i - 1;
+                }
+            }
         };
 
         return li;
