@@ -41,7 +41,7 @@ function Post(title, text, author) {
 
         //Delete post by click Delete button
         button.onclick = function deletePosts() {
-            //console.log(_this.index);
+            //console.log(this.index);
             for (let i = 0; i < posts.length; i++) {
                 if (posts[i].index == _this.index) {
                     posts.splice(i, 1);
