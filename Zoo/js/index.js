@@ -1,100 +1,172 @@
-const animalsGlobal = [];
-var zooBudgetGlobal = 500000;
+function Zoo(budget) {
+    this.budget = budget;
+    this.animalList = [];
+    this.visiting = function () {
+        const min = 1 * zoo.animalList.length;
+        const max = 10 * zoo.animalList.length;
+        const visitorListNumber = getRandomInt(min, max);
 
+        let earnings = 0;
+
+        for (let i = 0; i < zoo.animalList.length; i++) {
+            earnings += zoo.animalList[i].value * visitorListNumber;
+        }
+        zoo.budget = zoo.budget + earnings;
+        renderBudget();
+    }
+
+    this.buyAnimal = function (animal, name) {
+        let newAnimal = undefined;
+        switch (animal) {
+            case "Elephant":
+                newAnimal = new Elephant(name);
+                this.animalList.push(new Elephant(name));
+                this.budget -= newAnimal.price;
+
+                break;
+            case "Penguin":
+                newAnimal = new Penguin(name);
+                this.animalList.push(new Penguin(name));
+                this.budget -= newAnimal.price;
+                break;
+            case "Lion":
+                newAnimal = new Lion(name);
+                this.animalList.push(new Lion(name));
+                this.budget -= newAnimal.price;
+                break;
+        }
+        renderBudget();
+
+    }
+}
+
+function Animal(name, age) {
+    this.name = name;
+    this.age = age;
+    this.index = Date.now();
+
+    this.generateElement = function () {
+        const li = document.createElement('li');
+        const img = document.createElement('img');
+        const p = document.createElement('p');
+        const p1 = document.createElement('p');
+
+        p.innerText = this.name;
+        p1.innerText = this.age;
+        img.src = this.img;
+        li.id = this.index;
+
+        li.appendChild(img);
+        li.appendChild(p);
+        li.appendChild(p1);
+        return li;
+    }
+
+}
+
+function Elephant(name) {
+    this.price = 1000;
+    this.img = "https://assets.nrdc.org/sites/default/files/styles/full_content--retina/public/media-uploads/wlds43_654640_2400.jpg"
+    Animal.call(this, name, getRandomInt(1, 5));
+    this.value = 3;
+    this.maxAge = getRandomInt(50, 150);
+
+    function takePhoto() {
+        console.log("You can take photo with me");
+    }
+}
+
+function Penguin(name) {
+    this.price = 50;
+    this.img = "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iKIWgaiJUtss/v2/-1x-1.jpg"
+    Animal.call(this, name, getRandomInt(1, 2));
+    this.value = 1;
+    this.maxAge = getRandomInt(7, 15);
+
+
+}
+
+function Lion(name) {
+    this.price = 300;
+    this.img = "https://images.photowall.com/products/69237/lion-close-up.jpg?h=699&q=85"
+    Animal.call(this, name, getRandomInt(1, 3));
+    this.value = 2;
+    this.maxAge = getRandomInt(30, 50);
+
+
+}
+
+var zoo = new Zoo(10000);
+
+setInterval(zoo.visiting, 10000);
+
+setInterval(addYearRandom, 15000);
+
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
 
 function addAnimal() {
-    const newAnimal = document.getElementById("new-animal").value;
-    const animalCost = parseInt(document.getElementById("animal-cost").value);
-    const animal = new Animal(newAnimal, animalCost);
-    animalsGlobal.push(animal);
-    zooBudgetGlobal = zooBudgetGlobal - animalCost;
-    renderBudget();
-    renderAnimals(animalsGlobal);
-    renderAnimalsCount();
+    const animal = document.getElementById("animal-select").value;
+    const animalName = document.getElementById("animal-name").value;
+    zoo.buyAnimal(animal, animalName);
+    renderAnimalList();
+
 }
 
-class Animal {
-    constructor(newAnimal, animalCost) {
-        this.newAnimal = newAnimal;
-        this.animalCost = animalCost;
-        this.id = Date.now();
-        this.getListObject = function () {
+function addYearRandom() {
+    //Validate if animalList is not empty
+    if (zoo.animalList < 1) {
+        return;
+    }
 
-            const li = document.createElement('li');
-            const pAnimal = document.createElement('p');
-            const button = document.createElement('button');
-            const _this = this;
+    var randomAnimal = zoo.animalList[Math.floor(Math.random() * zoo.animalList.length)];
+    //  console.log(item.age);
+    randomAnimal.age = randomAnimal.age + 1;
+    // console.log(item.age);
+    renderAnimalList();
+    deleteAnimals();
+}
 
-            pAnimal.innerText = this.newAnimal;
-            button.innerText = "DELETE";
-            li.id = this.id;
+function deleteAnimals() {
+    for (let i = 0; i < zoo.animalList.length; i++) {
+        if (zoo.animalList[i].age >= zoo.animalList[i].maxAge) {
+            console.log("Time for you: " + zoo.animalList[i].name);
+            console.log("Age: " + zoo.animalList[i].age + " Max age: " + zoo.animalList[i].maxAge);
 
+            printAnimalsNames(zoo.animalList);
+            zoo.animalList.splice(i, 1);
+            printAnimalsNames(zoo.animalList);
 
-            li.appendChild(pAnimal);
-            li.appendChild(button);
-
-
-            //Delete animal by click Delete button
-            button.onclick = function deleteAnimals() {
-
-                for (let i = 0; i < animalsGlobal.length; i++) {
-                    if (animalsGlobal[i].id == _this.id) {
-                        animalsGlobal.splice(i, 1);
-                        renderAnimals(animalsGlobal);
-                        i = i - 1;
-                    }
-                }
-            };
-
-            return li;
-        };
+            renderAnimalList();
+        }
     }
 }
 
-function renderAnimals(animals) {
-    //clear old animals list
-    const list = document.getElementById("animals-list");
-    //create a new list
-    list.innerHTML = '';
+function printAnimalsNames(animalList) {
+    var animalsName = "";
+    animalList.forEach(function (animal) {
+        animalsName += animal.name + ",";
+    });
+    console.log(animalsName);
+}
 
-    for (let i = 0; i < animals.length; i++) {
-        const newAnimal = animals[i];
-        const li = newAnimal.getListObject();
-        list.appendChild(li);
+function renderAnimalList() {
+    const animalList = document.getElementById("animal-list");
+    animalList.innerHTML = "";
+    for (let i = 0; i < zoo.animalList.length; i++) {
+        const animal = zoo.animalList[i];
+        const domElement = animal.generateElement();
+        animalList.appendChild(domElement);
+
     }
+
 }
 
 function renderBudget() {
     const budget = document.getElementById("budgetAmount");
-    budget.innerText = zooBudgetGlobal;
-}
-
-function renderAnimalsCount() {
-    const animalsCount = document.getElementById("animalsCount");
-    animalsCount.innerText = animalsGlobal.length;
-
-}
-function renderAll() {
-    renderBudget();
-    renderAnimalsCount();
-    initializeIntervals();
-}
-
-function initializeIntervals() {
-    setInterval(function addBudgetInterval() {
-        zooBudgetGlobal = zooBudgetGlobal + 50;
-        renderBudget();
-        console.log("Wywolane initializeBudgetInterval()" + new Date().toISOString());
-    }, 10000)
-
-    setInterval(function deleteAnimalsInterval() {
-
-        animalsGlobal.splice(Math.floor(Math.random() * animalsGlobal.length), 1);
-        renderAnimals(animalsGlobal);
-        renderAnimalsCount();
-
-        console.log(animalsGlobal);
-        console.log("Wywolane deleteAnimalsInterval()" + new Date().toISOString());
-    }, 50000)
-
+    budget.innerText = zoo.budget;
 }

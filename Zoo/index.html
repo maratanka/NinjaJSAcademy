@@ -9,22 +9,21 @@
     <title>Document</title>
 </head>
 
-<body onload="renderAll()">
-    <div class="top">
-        <div class="budget">
-            <h1 class="title">ZOO</h1> <br>
-            <p class="budget">Budget: <span id="budgetAmount">0</span> $</p>
-            <p class="animalsCount">Animals count: <span id="animalsCount">0</span></p>
-            <input type="text" id="new-animal" placeholder="New animal"> <br>
-            <input type="text" id="animal-cost" placeholder="Animal cost"> <br>
-            <button class="add-button" onclick="addAnimal()">ADD</button>
-        </div>
+<body onload="renderBudget()">
+    <div id="control-panel">
+        <p class="budget">Budget: <span id="budgetAmount">0</span> $</p>
+        <input type="text" id="animal-name"> <br>
+        <select id="animal-select">
+          <option vaule="Elephant">Elephant</option>  
+          <option value="Penguin">Penguin</option>  
+          <option value="Lion">Lion</option>  
+        </select>
+        <button onclick="addAnimal()">Add Animal</button>
+
     </div>
-    <div class="bottom">
-        <ul id="animals-list">
-        </ul>
-    </div>
-    
+    <ul id="animal-list" >
+    </ul>
+
     <script type="text/javascript" src="../Zoo/js/index.js"></script>
 </body>
 
