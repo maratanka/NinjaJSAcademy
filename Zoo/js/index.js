@@ -71,8 +71,14 @@ function Elephant(name) {
     this.value = 3;
     this.maxAge = getRandomInt(50, 150);
 
-    function takePhoto() {
-        console.log("You can take photo with me");
+    this.activity = function() {
+        let activityName = "Photo";
+        var decider = document.getElementById('myCheck');
+        if (decider.checked) {
+            console.log("You can take photo with me");
+        } else {
+            return;
+        }
     }
 }
 
@@ -134,7 +140,6 @@ function addYearRandom() {
 function deleteAnimals() {
     for (let i = 0; i < zoo.animalList.length; i++) {
         if (zoo.animalList[i].age >= zoo.animalList[i].maxAge) {
-            console.log("Time for you: " + zoo.animalList[i].name);
             console.log("Age: " + zoo.animalList[i].age + " Max age: " + zoo.animalList[i].maxAge);
 
             printAnimalsNames(zoo.animalList);
