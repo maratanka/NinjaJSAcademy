@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../Zoo/css/styles.css">
+    <title>Document</title>
+</head>
+
+<body onload="renderAll()">
+    <div class="top">
+        <div class="budget">
+            <h1 class="title">ZOO</h1> <br>
+            <p class="budget">Budget: <span id="budgetAmount">0</span> $</p>
+            <p class="animalsCount">Animals count: <span id="animalsCount">0</span></p>
+            <input type="text" id="new-animal" placeholder="New animal"> <br>
+            <input type="text" id="animal-cost" placeholder="Animal cost"> <br>
+            <button class="add-button" onclick="addAnimal()">ADD</button>
+        </div>
+    </div>
+    <div class="bottom">
+        <ul id="animals-list">
+        </ul>
+    </div>
+    
+    <script type="text/javascript" src="../Zoo/js/index.js"></script>
+</body>
+
+</html>

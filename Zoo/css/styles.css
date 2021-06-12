@@ -1,0 +1,11 @@
+.loader {
+    position: absolute;
+}
+
+.hidden {
+    display: none;
+}
+
+img {
+    width: 200px;
+}
