@@ -1,11 +1,22 @@
 //1. Oczyscic string od liczb. Przyklad "asd78fdsd9sdf7asdf" zwraca "asdfdsdsdfasdf"
 
 function solution1(str) {
-    for (let i = 0; i < str.length; i++) {
-        strNew = str.split("0").join("");
-
+    let arrStr = str.split("");
+    let numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+    let i = str.length - 1;
+    while (i >= 0) {
+        i--;
+        let j = 0
+        while (j < numbers.length) {
+            j++;
+            if (arrStr[i] === numbers[j]) {
+                arrStr.splice(i, 1);
+            }
+        }
     }
-    console.log("Solution1: " + strNew);
+
+    console.log("Solution1: " + arrStr.join(""));
+
 }
 
 string1 = "asd78fdsd9sdf7asdf";
@@ -44,20 +55,20 @@ function solution3(str) {
 function solution3_vol2(str) {
 
     arrayStr = str.split("");
-    let count = 0;
-
-    for (let i = 0; i < arrayStr.length; i++) {
-        for (j = 0; j < i; j++)
-            if (arrayStr[i] == arrayStr[j])
-                break;
-        if (j == i)
-            arrayStr[count++] = arrayStr[i];
+    let duplicates = {};
+    let newArray = [];
+    let j = 0;
+    let i = 0;
+    while (i < arrayStr.length) { 
+        let item = arrayStr[i];
+        if (duplicates[item] !== 1) {
+            duplicates[item] = 1;
+            newArray[j++] = item;
+        }
+        i++;
     }
 
-    newArray = arrayStr;
-
-
-console.log("Solution3_vol2: " + arrayStr);
+    console.log("Solution3_vol2: " + newArray.join(""));
 }
 
 
