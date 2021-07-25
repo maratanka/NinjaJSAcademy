@@ -29,19 +29,20 @@ function validation(e) {
 
     const atSymbol = email.indexOf("@");
     const dotSymbol = email.indexOf(".");
+    const lastSign = email.length - 1;
 
-    if ((atSymbol < 1) || (dotSymbol <= atSymbol + 2)) {
+    if ((email =='') || (atSymbol <= 0) || (dotSymbol <= 0) || (dotSymbol == lastSign) || (email.indexOf(" ") >= 0) || (email.indexOf("..") >= 0)){
         e.preventDefault();
         showErrorMessage('Wrong email');
     }
 
 
-    if (document.getElementById('password').value ==
-        document.getElementById('repassword').value) {
+    if (((document.getElementById('password').value ==
+        document.getElementById('repassword').value)) && (document.getElementById('password').value !== "")) {
         console.log(e);
     } else {
         e.preventDefault();
-        showErrorMessage('Wrong confirmed email');
+        showErrorMessage('Wrong confirmed password');
     }
 
 
