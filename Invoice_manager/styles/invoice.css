@@ -23,6 +23,16 @@
     overflow: hidden;
 }
 
+.invoices{
+    width: 780px;
+    height: 680px;
+    position: absolute;
+    margin: 6% auto;
+    background: #fff;
+    padding: 5px;
+
+}
+
 .button-box{
     width: 220px;
     margin: 35px auto;
@@ -88,4 +98,11 @@
 
 #register {
     left: 450px;
+}
+
+.helper-text{
+    width: 85%;
+    padding: 10px 30px;
+    font-family: sans-serif;
+    font-size: small;
 }
