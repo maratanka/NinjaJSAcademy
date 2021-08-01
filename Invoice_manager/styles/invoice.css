@@ -80,7 +80,7 @@
     background: transparent;
 }
 
-.submit-btn{
+.submit-btn {
     width: 85%;
     padding: 10px 30px;
     cursor: pointer;
@@ -90,6 +90,32 @@
     border: 0;
     outline: none;
     border-radius: 40px;;
+}
+
+.add-btn {
+    width: 35%;
+    padding: 10px 10px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background: linear-gradient(to right, #3d2e97, #88b5ca);
+    border: 0;
+    outline: none;
+    border-radius: 40px;;
+}
+
+#addForm {
+    padding: 10px 10px;
+}
+
+#tableHeader {
+    padding: 10px 10px;
+    margin: 5px 0;
+}
+
+.tableCells {
+    padding: 10px 10px;
+    margin: 5px 0; 
 }
 
 #login {
