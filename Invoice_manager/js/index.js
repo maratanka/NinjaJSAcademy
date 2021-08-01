@@ -113,42 +113,42 @@ function logout() {
     window.location.reload(false);
 }
 
-function creatingInvoicingPanel(){
-    
+function creatingInvoicingPanel() {
+
     var obj = [{ Invoicenumber: "1234567", Itemname: "Books", Price: "5566", Invoicedate: "2019-08-10" }, { Invoicenumber: "19998", Itemname: "Tables", Price: "887766", Invoicedate: "2020-06-01" }, { Invoicenumber: "667788", Itemname: "Water", Price: "877", Invoicedate: "2019-07-09" }];
 
     //Creating form for invoices
     var form = document.createElement('form');
     form.id = "details";
     document.body.appendChild(form);
-    
+
     var tableDiv = document.createElement('div');
     tableDiv.setAttribute("id", "invoices");
     form.appendChild(tableDiv);
-    
+
     var table = document.createElement("table");
     table.setAttribute("id", "myTable");
     tableDiv.appendChild(table);
-    
+
     var btnDelete = document.createElement('input');
     btnDelete.type = "button";
     btnDelete.value = "Delete";
     btnDelete.onclick = deleteRow;
     form.appendChild(btnDelete);
-    
+
     var addForm = document.createElement('div');
     addForm.setAttribute("id", "addForm");
     form.appendChild(addForm);
     //End of creating form for invoices
-    
-    
+
+
     //Creating headres
 
-    const headers = ["Select", "Nr", "Invoicenumber", "Itemname", "Price", "Invoicedate", "Action" ];
+    const headers = ["Select", "Nr", "Invoicenumber", "Itemname", "Price", "Invoicedate", "Action"];
     var row = document.createElement("tr");
     row.setAttribute("id", "tableHeader")
 
-    for (i = 0; i < headers.length; i++){
+    for (i = 0; i < headers.length; i++) {
         var cell = document.createElement("th");
         cell.setAttribute("class", "tableCells")
         row.appendChild(cell);
@@ -157,130 +157,131 @@ function creatingInvoicingPanel(){
 
     table.appendChild(row);
     //End of creating headres
-    
-    
+
+
     //Adding input fields for invoices
     var invoiceNumber = document.createElement('input');
     invoiceNumber.type = "text";
     invoiceNumber.placeholder = "Invoice Number";
     invoiceNumber.required = true;
     addForm.appendChild(invoiceNumber);
-    
+
     var itemName = document.createElement('input');
     itemName.type = "text";
     itemName.placeholder = "Item Name";
     itemName.required = true;
     addForm.appendChild(itemName);
-    
+
     var price = document.createElement('input');
     price.type = "number";
     price.placeholder = "Price";
     price.required = true;
     addForm.appendChild(price);
-    
+
     var invoiceDate = document.createElement('input');
     invoiceDate.type = "date";
     invoiceDate.placeholder = "Number";
     invoiceDate.required = true;
     addForm.appendChild(invoiceDate);
-    
-    
-       //Rendering sample invoice
-     
-        for (var i = 0; i < obj.length; i++) {
-    
-            var btnEdit = document.createElement('input');
-            btnEdit.type = "button";
-            btnEdit.value = "Edit";
-            btnEdit.onclick = editCell;
-    
-            var checkbox = document.createElement('input');
-            checkbox.type = "checkbox";
-            checkbox.id = "checkBox";
-    
-            var row = document.createElement("tr");
-            table.appendChild(row);
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.appendChild(checkbox);
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = i;
-            for (key in obj[i]) {
-                0
-                var cell = document.createElement("td");
-                row.appendChild(cell);
-                cell.innerHTML = obj[i][key];
-            }
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.appendChild(btnEdit);
-        }
 
-    var addTable = function () {
-    
+
+    //Rendering sample invoice
+
+    for (var i = 0; i < obj.length; i++) {
+
+
         var btnEdit = document.createElement('input');
         btnEdit.type = "button";
         btnEdit.value = "Edit";
         btnEdit.onclick = editCell;
-    
+
+        var checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.id = "checkBox";
+
+        var row = document.createElement("tr");
+        table.appendChild(row);
+        var cell = document.createElement("td");
+        row.appendChild(cell);
+        cell.appendChild(checkbox);
+        var cell = document.createElement("td");
+        row.appendChild(cell);
+        cell.innerHTML = i;
+        for (key in obj[i]) {
+            0
+            var cell = document.createElement("td");
+            row.appendChild(cell);
+            cell.innerHTML = obj[i][key];
+        }
+        var cell = document.createElement("td");
+        row.appendChild(cell);
+        cell.appendChild(btnEdit);
+    }
+
+    var addTable = function () {
+
+        var btnEdit = document.createElement('input');
+        btnEdit.type = "button";
+        btnEdit.value = "Edit";
+        btnEdit.onclick = editCell;
+
         var checkbox = document.createElement('input');
         checkbox.type = "checkbox";
         checkbox.id = "checkBox";
         var row = document.createElement("tr");
         if ((invoiceNumber.value != "") && (itemName.value != "") && (price.value != "") && (invoiceDate.value != "")) {
-    
+
             table.appendChild(row);
 
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.appendChild(checkbox);
-    
+
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.innerHTML = i++;
-    
+
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.innerHTML = invoiceNumber.value;
-    
+
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.innerHTML = itemName.value;
-    
+
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.innerHTML = price.value;
-    
+
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.innerHTML = invoiceDate.value;
-    
+
             var cell = document.createElement("td");
             row.appendChild(cell);
             cell.appendChild(btnEdit);
-    
+
             document.getElementById("details").reset();
         }
         else {
             alert("Enter Input Values");
         }
     };
-    
+
     var btnClick = document.createElement('input');
     btnClick.type = "submit";
     btnClick.setAttribute("class", "add-btn");
     btnClick.value = "Add Row";
     btnClick.onclick = addTable;
     form.appendChild(btnClick);
-    
+
     var logoutBtn = document.createElement('button');
     logoutBtn.innerHTML = "Logout";
     logoutBtn.setAttribute("class", "submit-btn");
     logoutBtn.onclick = logout;
     form.appendChild(logoutBtn);
-    
-    
+
+
     function deleteRow() {
         var tabDel = document.getElementById('myTable');
         var rowCount = tabDel.rows.length;
@@ -294,23 +295,40 @@ function creatingInvoicingPanel(){
             }
         }
     }
-    
+
     function editCell(e) {
-    
+
+        var btnSave = document.createElement('button');
+        btnSave.innerHTML = "Save";
+        btnSave.onclick = saveCell;
+        var cell = document.createElement("td");
+        row.appendChild(cell);
+        cell.appendChild(btnSave);
+
         var t = e.target.parentElement.parentElement;
         var trs = t.getElementsByTagName("tr");
         tds = t.getElementsByTagName("td");
-    
+
         tds[2].appendChild(invoiceNumber);
-    
+
         tds[3].appendChild(itemName);
-    
+
         tds[4].appendChild(price);
-    
+
         tds[5].appendChild(invoiceDate);
         curr = t;
     }
 
+    function saveCell() {
+        if (curr != undefined) {
+            var inputs = curr.getElementsByTagName("td");
+            for (var i = 2; i < inputs.length - 1; i++) {
+                currInput = inputs[i].getElementsByTagName("input");
+                currInput[0].parentElement.innerHTML = currInput[0].value;
+            }
+            curr = undefined;
+        }
+
+    }
+
 }
-
-
