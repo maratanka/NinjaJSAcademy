@@ -36,8 +36,8 @@ function store() {
     } else if (name.value.length == 0 && pw.value.length == 0) {
         alert('Please fill in email and password');
 
-    } else if (pw.value.length > 8) {
-        alert('Max of 8');
+    } else if (pw.value.length < 8) {
+        alert('Min of 8');
 
     } else if (!pw.value.match(numbers)) {
         alert('please add 1 number');
@@ -53,9 +53,22 @@ function store() {
     } else {
 
         if (name.value && pw.value) {
-            localStorage.setItem('name', JSON.stringify(name.value));
-            localStorage.setItem('pw', JSON.stringify(pw.value));
+            
+            let usersObj = {
+                name: name.value,
+                password: pw.value
+            };
 
+            let registeredUsers = [];
+            
+            if(!localStorage.getItem('Users')) {
+               registeredUsers.push(usersObj);
+               localStorage.setItem('Users', JSON.stringify(registeredUsers));
+            } else {
+               registeredUsers = JSON.parse(localStorage.getItem('Users'));
+               registeredUsers.push(usersObj);
+               localStorage.setItem('Users', JSON.stringify(registeredUsers));
+            }            
         }
 
         alert('Your account has been created');

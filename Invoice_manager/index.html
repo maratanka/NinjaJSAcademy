@@ -19,13 +19,13 @@
             </div>
             <form id="login" class="input-group">
                 <input id="userName" type="text" class="input-field" placeholder="Login" required>
-                <input id="userPw" type="text" class="input-field" placeholder="Password" required>
+                <input id="userPw" type="password" class="input-field" placeholder="Password" required>
                 <button type="submit" class="submit-btn" onclick="login()">Log in</button>
             </form>
             <form id="register" class="input-group">
                 <input id="name" type="text" class="input-field" placeholder="Login" required>
-                <input id="pw" type="text" class="input-field" placeholder="Password" required>
-                <input id="rePw" type="text" class="input-field" placeholder="Repeat password" required>
+                <input id="pw" type="password" class="input-field" placeholder="Password" required>
+                <input id="rePw" type="password" class="input-field" placeholder="Repeat password" required>
                 <ul class="helper-text">
                     <li class="length">Must be at least 8 characters long.</li>
                     <li class="lowercase">Must contain a lowercase letter.</li>
@@ -36,24 +36,6 @@
             </form>
 
         </div>
-<!--         <div class="invoices">
-            <button type="submit" class="submit-btn" onclick="logout()" >Log out</button>
-            <table class="invoiceTab">
-                <tr>
-                    <th>Invoice number</th>
-                    <th>Item name</th>
-                    <th>Price</th>
-                    <th>Date</th>
-                </tr>
-                <tr>
-                    <td>1234</td>
-                    <td>Books</td>
-                    <td>9999</td>
-                    <td>12/03/2020</td>
-                </tr>
-                <button class="addBtn" onclick="addInvoice()">Add Invoice</button>
-        </div> -->
-
     </div>
 
     <script type="text/javascript" src="../Invoice_manager/js/index.js"></script>
