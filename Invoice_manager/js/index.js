@@ -15,7 +15,7 @@ function showLoginView() {
 }
 
 
-function store() {
+function store() { //todo change name to "register"
 
     const name = document.getElementById('name');
     const pw = document.getElementById('pw');
@@ -52,51 +52,60 @@ function store() {
         alert('Repassword does not match');
     } else {
 
-        if (name.value && pw.value) {
-            
-            let usersObj = {
-                name: name.value,
-                password: pw.value
-            };
+        let newRegisteredUser = {
+            userName: name.value,
+            password: pw.value
+        };
 
-            let registeredUsers = [];
-            
-            if(!localStorage.getItem('Users')) {
-               registeredUsers.push(usersObj);
-               localStorage.setItem('Users', JSON.stringify(registeredUsers));
-            } else {
-               registeredUsers = JSON.parse(localStorage.getItem('Users'));
-               registeredUsers.push(usersObj);
-               localStorage.setItem('Users', JSON.stringify(registeredUsers));
-            }            
+        let registeredUsers = [];
+
+        if (!localStorage.getItem('Users')) {
+            registeredUsers.push(newRegisteredUser);
+            localStorage.setItem('Users', JSON.stringify(registeredUsers));
+        } else {
+            var localStoredUsersJson = localStorage.getItem('Users');
+            registeredUsers = JSON.parse(localStoredUsersJson);
+
+            var isUserExist = false;
+            for (let i = 0; i < registeredUsers.length; i++) {
+                if (registeredUsers[i].userName == newRegisteredUser.userName) {
+                    isUserExist = true;
+                }
+            }
+
+            if (isUserExist) {
+                alert("User already exists!");
+            }
+            else {
+                registeredUsers.push(newRegisteredUser);
+                localStorage.setItem('Users', JSON.stringify(registeredUsers));
+                alert('Your account has been created');
+            }
         }
-
-        alert('Your account has been created');
     }
 }
 
 
 function login() {
 
-    //Dummy User
-    // localStorage.setItem('name', JSON.stringify("Ania"));
-    // localStorage.setItem('pw', JSON.stringify("Ania123!"));
+    var retrievedUsers = JSON.parse(localStorage.getItem('Users'));
+
+    var providedUsername = document.getElementById('userName').value;
+    var providedUserPassword = document.getElementById('userPw').value;
+
+    var isUserRegistered = false;
+    for (let i = 0; i < retrievedUsers.length; i++) {
+        if (retrievedUsers[i].userName == providedUsername && retrievedUsers[i].password == providedUserPassword) {
+            isUserRegistered = true;
+        }
+    }
 
 
-    const storedNameJSON = localStorage.getItem('name');
-    const storedPwJSON = localStorage.getItem('pw');
-
-    var storedName = JSON.parse(storedNameJSON);
-    var storedPw = JSON.parse(storedPwJSON);
-
-    var userName = document.getElementById('userName').value;
-    var userPw = document.getElementById('userPw').value;
-
-    if (userName == storedName && userPw == storedPw) {
+    if (isUserRegistered) {
         var el = document.getElementsByClassName("form-box")[0];
 
         alert('You are logged in.');
-        sessionStorage.setItem("currentloggedin", userName);
+        sessionStorage.setItem("currentloggedin", providedUsername);
         console.log("checkIfNotLogin is done from Login");
         checkIfNotLogin();
         el.remove();
@@ -106,7 +115,6 @@ function login() {
     } else {
         alert('Error on login');
     }
-
 }
 
 
@@ -126,222 +134,267 @@ function logout() {
     window.location.reload(false);
 }
 
+
+
 function creatingInvoicingPanel() {
 
-    var obj = [{ Invoicenumber: "1234567", Itemname: "Books", Price: "5566", Invoicedate: "2019-08-10" }, { Invoicenumber: "19998", Itemname: "Tables", Price: "887766", Invoicedate: "2020-06-01" }, { Invoicenumber: "667788", Itemname: "Water", Price: "877", Invoicedate: "2019-07-09" }];
-
     //Creating form for invoices
-    var form = document.createElement('form');
-    form.id = "details";
-    document.body.appendChild(form);
+    const formInvoices = document.createElement('form');
+    formInvoices.id = "details";
+    document.body.appendChild(formInvoices);
 
-    var tableDiv = document.createElement('div');
-    tableDiv.setAttribute("id", "invoices");
-    form.appendChild(tableDiv);
+    const tableDivInvoices = document.createElement('div');
+    tableDivInvoices.setAttribute("id", "invoices");
+    formInvoices.appendChild(tableDivInvoices);
 
-    var table = document.createElement("table");
-    table.setAttribute("id", "myTable");
-    tableDiv.appendChild(table);
+    const tableInvoices = document.createElement("table");
+    tableInvoices.setAttribute("id", "myTable");
+    tableDivInvoices.appendChild(tableInvoices);
 
-    var btnDelete = document.createElement('input');
-    btnDelete.type = "button";
-    btnDelete.value = "Delete";
-    btnDelete.onclick = deleteRow;
-    form.appendChild(btnDelete);
+        //Creating input fields
+        const inputInvoiceNumber = document.createElement('input');
+        inputInvoiceNumber.placeholder = "Invoice Number";
+        inputInvoiceNumber.setAttribute("id", "invoice-number");
+        formInvoices.appendChild(inputInvoiceNumber);
+    
+        const inputInvoiceName = document.createElement('input');
+        inputInvoiceName.placeholder = "Invoice Name";
+        inputInvoiceName.setAttribute("id", "invoice-name");
+        formInvoices.appendChild(inputInvoiceName);
+    
+        const inputInvoicePrice = document.createElement('input');
+        inputInvoicePrice.placeholder = "Price";
+        inputInvoicePrice.type = "number";
+        inputInvoicePrice.setAttribute("id", "invoice-price");
+        formInvoices.appendChild(inputInvoicePrice);
+    
+        const inputInvoiceDate = document.createElement('input');
+        inputInvoiceDate.placeholder = "Invoice Date";
+        inputInvoiceDate.type = "date";
+        inputInvoiceDate.setAttribute("id", "invoice-date");
+        formInvoices.appendChild(inputInvoiceDate);
+    
+        const buttonAddInvoice = document.createElement("button");
+        buttonAddInvoice.innerText = "Add Invoice";
+        buttonAddInvoice.setAttribute("id", "add-btn");
+        formInvoices.appendChild(buttonAddInvoice);
+        buttonAddInvoice.onclick = addInvoice;
 
-    var addForm = document.createElement('div');
-    addForm.setAttribute("id", "addForm");
-    form.appendChild(addForm);
-    //End of creating form for invoices
 
+    //Add logoutButton to formInvoices
+    const logoutBtn = document.createElement('button');
+    logoutBtn.innerHTML = "Logout";
+    logoutBtn.setAttribute("class", "submit-btn");
+    logoutBtn.onclick = logout;
+    formInvoices.appendChild(logoutBtn);
 
     //Creating headres
-
-    const headers = ["Select", "Nr", "Invoicenumber", "Itemname", "Price", "Invoicedate", "Action"];
-    var row = document.createElement("tr");
-    row.setAttribute("id", "tableHeader")
+    const headers = ["Invoice Number", "Invoice Name", "Price", "Invoice Date", "Action"];
+    const tableRowWithHeaders = document.createElement("tr");
+    tableRowWithHeaders.setAttribute("id", "tableHeader")
 
     for (i = 0; i < headers.length; i++) {
         var cell = document.createElement("th");
         cell.setAttribute("class", "tableCells")
-        row.appendChild(cell);
+        tableRowWithHeaders.appendChild(cell);
         cell.innerHTML = headers[i];
     }
 
-    table.appendChild(row);
+    tableInvoices.appendChild(tableRowWithHeaders);
     //End of creating headres
 
+    const invoicesTableToGenerateDiv = document.createElement("div");
+    invoicesTableToGenerateDiv.setAttribute("id", "invoices-table-div");
+    tableInvoices.appendChild(invoicesTableToGenerateDiv);
 
-    //Adding input fields for invoices
-    var invoiceNumber = document.createElement('input');
-    invoiceNumber.type = "text";
-    invoiceNumber.placeholder = "Invoice Number";
-    invoiceNumber.required = true;
-    addForm.appendChild(invoiceNumber);
-
-    var itemName = document.createElement('input');
-    itemName.type = "text";
-    itemName.placeholder = "Item Name";
-    itemName.required = true;
-    addForm.appendChild(itemName);
-
-    var price = document.createElement('input');
-    price.type = "number";
-    price.placeholder = "Price";
-    price.required = true;
-    addForm.appendChild(price);
-
-    var invoiceDate = document.createElement('input');
-    invoiceDate.type = "date";
-    invoiceDate.placeholder = "Number";
-    invoiceDate.required = true;
-    addForm.appendChild(invoiceDate);
-
-
-    //Rendering sample invoice
-
-    for (var i = 0; i < obj.length; i++) {
-
-
-        var btnEdit = document.createElement('input');
-        btnEdit.type = "button";
-        btnEdit.value = "Edit";
-        btnEdit.onclick = editCell;
-
-        var checkbox = document.createElement('input');
-        checkbox.type = "checkbox";
-        checkbox.id = "checkBox";
-
-        var row = document.createElement("tr");
-        table.appendChild(row);
-        var cell = document.createElement("td");
-        row.appendChild(cell);
-        cell.appendChild(checkbox);
-        var cell = document.createElement("td");
-        row.appendChild(cell);
-        cell.innerHTML = i;
-        for (key in obj[i]) {
-            0
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = obj[i][key];
-        }
-        var cell = document.createElement("td");
-        row.appendChild(cell);
-        cell.appendChild(btnEdit);
+    if(!localStorage.getItem('invoices')){
+        var invoices = [];
+        localStorage.setItem('invoices', JSON.stringify(invoices));
     }
 
-    var addTable = function () {
-
-        var btnEdit = document.createElement('input');
-        btnEdit.type = "button";
-        btnEdit.value = "Edit";
-        btnEdit.onclick = editCell;
-
-        var checkbox = document.createElement('input');
-        checkbox.type = "checkbox";
-        checkbox.id = "checkBox";
-        var row = document.createElement("tr");
-        if ((invoiceNumber.value != "") && (itemName.value != "") && (price.value != "") && (invoiceDate.value != "")) {
-
-            table.appendChild(row);
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.appendChild(checkbox);
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = i++;
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = invoiceNumber.value;
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = itemName.value;
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = price.value;
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.innerHTML = invoiceDate.value;
-
-            var cell = document.createElement("td");
-            row.appendChild(cell);
-            cell.appendChild(btnEdit);
-
-            document.getElementById("details").reset();
-        }
-        else {
-            alert("Enter Input Values");
-        }
-    };
-
-    var btnClick = document.createElement('input');
-    btnClick.type = "submit";
-    btnClick.setAttribute("class", "add-btn");
-    btnClick.value = "Add Row";
-    btnClick.onclick = addTable;
-    form.appendChild(btnClick);
-
-    var logoutBtn = document.createElement('button');
-    logoutBtn.innerHTML = "Logout";
-    logoutBtn.setAttribute("class", "submit-btn");
-    logoutBtn.onclick = logout;
-    form.appendChild(logoutBtn);
-
-
-    function deleteRow() {
-        var tabDel = document.getElementById('myTable');
-        var rowCount = tabDel.rows.length;
-        for (var i = 0; i < rowCount; i++) {
-            var row = tabDel.rows[i];
-            var chkbox = row.cells[0].childNodes[0];
-            if (chkbox.checked) {
-                tabDel.deleteRow(i);
-                rowCount--;
-                i--;
-            }
-        }
-    }
-
-    function editCell(e) {
-
-        var btnSave = document.createElement('button');
-        btnSave.innerHTML = "Save";
-        btnSave.onclick = saveCell;
-        var cell = document.createElement("td");
-        row.appendChild(cell);
-        cell.appendChild(btnSave);
-
-        var t = e.target.parentElement.parentElement;
-        var trs = t.getElementsByTagName("tr");
-        tds = t.getElementsByTagName("td");
-
-        tds[2].appendChild(invoiceNumber);
-
-        tds[3].appendChild(itemName);
-
-        tds[4].appendChild(price);
-
-        tds[5].appendChild(invoiceDate);
-        curr = t;
-    }
-
-    function saveCell() {
-        if (curr != undefined) {
-            var inputs = curr.getElementsByTagName("td");
-            for (var i = 2; i < inputs.length - 1; i++) {
-                currInput = inputs[i].getElementsByTagName("input");
-                currInput[0].parentElement.innerHTML = currInput[0].value;
-            }
-            curr = undefined;
-        }
-
-    }
-
+    var invoicesStorageJSON = localStorage.getItem('invoices');
+    var invoices = JSON.parse(invoicesStorageJSON);
+    renderInvoices(invoices, tableInvoices);
 }
+
+class Invoice {
+    constructor(invoiceNumber, invoiceName, invoicePrice, invoiceDate){
+        this.invoiceNumber = invoiceNumber;
+        this.invoiceName = invoiceName;
+        this.invoicePrice = invoicePrice;
+        this.invoiceDate = invoiceDate;
+        this.index = Date.now();
+    }
+}
+
+
+//Send values from Invoice Number, Name, Price and Invoice Date
+
+function addInvoice() {
+    const invoiceNumber = document.getElementById("invoice-number").value;
+    const invoiceName = document.getElementById("invoice-name").value;
+    const invoicePrice = document.getElementById("invoice-price").value;
+    const invoiceDate = document.getElementById("invoice-date").value;
+    const invoice = new Invoice(invoiceNumber, invoiceName, invoicePrice, invoiceDate);
+    console.log("Invooices added invoice={}", invoice);
+    // read from local storage
+    if(!localStorage.getItem('invoices')){
+        var invoices = [];
+        localStorage.setItem('invoices', JSON.stringify(invoices));
+    }
+    
+
+    var invoicesStorageJSON = localStorage.getItem('invoices');
+    // parse this format (JSON to object
+    var invoices = JSON.parse(invoicesStorageJSON);
+    //push new invoice
+    invoices.push(invoice);
+    //set update on local storage
+    localStorage.setItem('invoices', JSON.stringify(invoices));
+}
+
+function renderInvoices(invoices, tableInvoices) {
+
+    console.log("renderInvoices invoices={}", invoices);
+
+    for (let i = 0; i < invoices.length; i++) {
+        const invoice = invoices[i];
+
+        //create next invoice (tr)
+        const tableRowWithHeadersI = document.createElement("tr");
+        tableRowWithHeadersI.setAttribute("id", "tableHeader"+i)
+
+        //fill invoice data inside tr(td)
+        const tableDetailsNumber = document.createElement('td');
+        tableDetailsNumber.setAttribute("class", "tableCells")
+        const tableDetailsNumberText = document.createTextNode(invoice.invoiceNumber);
+        tableDetailsNumber.appendChild(tableDetailsNumberText);
+        tableRowWithHeadersI.appendChild(tableDetailsNumber);
+
+        const tableDetailsName = document.createElement('td');
+        tableDetailsName.setAttribute("class", "tableCells")
+        const tableDetailsNameText = document.createTextNode(invoice.invoiceName);
+        tableDetailsName.appendChild(tableDetailsNameText);
+        tableRowWithHeadersI.appendChild(tableDetailsName);
+
+        const tableDetailsPrice = document.createElement('td');
+        tableDetailsPrice.setAttribute("class", "tableCells")
+        const tableDetailsPriceText = document.createTextNode(invoice.invoicePrice);
+        tableDetailsPrice.appendChild(tableDetailsPriceText);
+        tableRowWithHeadersI.appendChild(tableDetailsPrice);
+
+        const tableDetailsDate = document.createElement('td');
+        tableDetailsDate.setAttribute("class", "tableCells");
+        const tableDetailsDateText = document.createTextNode(invoice.invoiceDate);
+        tableDetailsDate.appendChild(tableDetailsDateText);
+        tableRowWithHeadersI.appendChild(tableDetailsDate);
+
+
+        const tableDetailsAction = document.createElement('td');
+        tableDetailsAction.setAttribute("class", "tableCells");
+
+        // Delete and edit are not working for now 
+
+        // var buttonDelete = document.createElement('button');
+        // buttonDelete.innerText = "DELETE";
+        // buttonDelete.addEventListener('click', function(){
+        //     deleteInvoice(invoice.invoiceNumber);
+        // });
+
+        // const buttonDelete = document.createElement('button');
+        // buttonDelete.innerText = "DELETE";
+        // var magicString = "deleteInvoice(\'"+invoice.invoiceNumber+"\')"
+        // buttonDelete.onclick =magicString;
+        // buttonDelete.onclick = function deleteInvoice(invoiceNumber) {
+        //     console.log("deleteInvoice={}", invoice);
+        //     var invoices = localStorage.getItem('invoices');
+        //     for (let i = 0; i < invoices.length; i++) {
+        //         if (invoices[i].invoiceNumber == invoice) { // ===
+        //             invoices.splice(i, 1);
+        //             i = i - 1;
+        //         }
+        //     }
+        //     localStorage.setItem('invoices', JSON.stringify(invoices));
+        // };
+        
+        // tableDetailsAction.appendChild(buttonDelete);
+        // tableRowWithHeadersI.appendChild(tableDetailsAction);
+
+
+        // const editButton = document.createElement('button');
+        // editButton.innerText = "EDIT";
+        // tableRow.id = invoice.index;
+
+
+        // editButton.onclick = function editInvoices(){
+        //     var invoices = localStorage.getItem('invoices');
+        //     for (let i = 0; i < invoices.length; i++) {
+        //         if (invoices[i].index == _this.index) {
+
+        //             //To do edit invoices
+        //             console.log("Edited invoice: " + invoices[i].index);
+        //         }
+        //     }
+        // }
+
+        console.log("Table row added tableRowWithHeadersI={}", tableRowWithHeadersI);
+
+        tableInvoices.appendChild(tableRowWithHeadersI);
+    }
+
+    console.log("The end");
+}
+
+function deleteInvoice(invoiceNumber) {
+    console.log("deleteInvoice={}", invoiceNumber);
+    var invoices = localStorage.getItem('invoices');
+    for (let i = 0; i < invoices.length; i++) {
+        if (invoices[i].invoiceNumber == invoiceNumber) { // ===
+            invoices.splice(i, 1);
+            i = i - 1;
+        }
+    }
+    localStorage.setItem('invoices', JSON.stringify(invoices));
+};
+
+function mapInvoiceToHtml(invoice) {
+    const tableInvoice = document.createElement('table');
+    const tableHead = document.createElement('thead');
+    const tableBody = document.createElement('tbody');
+
+    const tableRow = document.createElement('tr');
+    const tableDetailsNumber = document.createElement('td');
+    const tableDetailsName = document.createElement('td');
+    const tableDetailsPrice = document.createElement('td');
+    const tableDetailsDate = document.createElement('td');
+    console.log("Clean Table row added tableInvoice={}", tableInvoice);
+
+    const buttonDelete = document.createElement('button');
+    const editButton = document.createElement('button');
+
+
+    const tableDetailsNumberText = document.createTextNode(invoice.invoiceNumber);
+    const tableDetailsNameText = document.createTextNode(invoice.invoiceName);
+    const tableDetailsPriceText = document.createTextNode(invoice.invoicePrice);
+    const tableDetailsDateText = document.createTextNode(invoice.invoiceDate);
+
+    buttonDelete.innerText = "DELETE";
+    editButton.innerText = "EDIT";
+    tableRow.id = invoice.index;
+
+    tableDetailsNumber.appendChild(tableDetailsNumberText);
+    tableDetailsName.appendChild(tableDetailsNameText);
+    tableDetailsPrice.appendChild(tableDetailsPriceText);
+    tableDetailsDate.appendChild(tableDetailsDateText);
+
+    tableInvoice.appendChild(tableHead);
+    tableInvoice.appendChild(tableBody);
+    tableBody.appendChild(tableRow);
+    tableRow.appendChild(tableDetailsNumber);
+    tableRow.appendChild(tableDetailsName);
+    tableRow.appendChild(tableDetailsPrice);
+    tableRow.appendChild(tableDetailsDate);
+    console.log("Table row added tableInvoice={}", tableInvoice);
+
+    return tableInvoice;
+};

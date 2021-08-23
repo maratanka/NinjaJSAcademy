@@ -23,24 +23,27 @@ class Post {
             const h3 = document.createElement('h3');
             const pText = document.createElement('p');
             const pAuthor = document.createElement('p');
-            const button = document.createElement('button');
+            const buttonDelete = document.createElement('button');
+            const editButton = document.createElement('button');
             const _this = this;
 
             h3.innerText = this.title;
             pText.innerText = this.text;
             pAuthor.innerText = this.author;
-            button.innerText = "DELETE";
+            buttonDelete.innerText = "DELETE";
+            editButton.innerText = "EDIT";
             li.id = this.index;
 
             li.appendChild(h3);
             li.appendChild(pText);
             li.appendChild(pAuthor);
-            li.appendChild(button);
+            li.appendChild(buttonDelete);
+            li.appendChild(editButton);
 
             // li.id = "myPost";
             // button.id = "delete";
             //Delete post by click Delete button
-            button.onclick = function deletePosts() {
+            buttonDelete.onclick = function deletePosts() {
                 //console.log(this.index);
                 for (let i = 0; i < posts.length; i++) {
                     if (posts[i].index == _this.index) {
@@ -50,6 +53,15 @@ class Post {
                     }
                 }
             };
+
+            editButton.onclick = function editPost(){
+                for (let i = 0; i < posts.length; i++) {
+                    if (posts[i].index == _this.index) {
+                        console.log("Edited post: " + posts[i].index);
+                        renderPosts(posts);
+                    }
+                }
+            }
 
             return li;
         };
