@@ -100,7 +100,7 @@ function login() {
         }
     }
 
-
+//After sucess login form-box div is removed and invoicing panel is shown
     if (isUserRegistered) {
         var el = document.getElementsByClassName("form-box")[0];
 
@@ -294,12 +294,6 @@ function renderInvoices(invoices, tableInvoices) {
         tableDetailsAction.setAttribute("class", "tableCells");
 
         // Delete and edit are not working for now 
-
-        // var buttonDelete = document.createElement('button');
-        // buttonDelete.innerText = "DELETE";
-        // buttonDelete.addEventListener('click', function(){
-        //     deleteInvoice(invoice.invoiceNumber);
-        // });
 
         // const buttonDelete = document.createElement('button');
         // buttonDelete.innerText = "DELETE";
